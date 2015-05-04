@@ -1,15 +1,14 @@
-
 import requests
 BASE_USAJOBS_URL = "https://data.usajobs.gov/api/jobs"
-names = [['California','CA'], ['Florida', 'FL'], ['Maryland', 'MD'] , ['New York', 'NY']]
+codes = requests.get("http://stash.compjour.org/data/usajobs/us-statecodes.json").json()
 thelist = []
 thelist.append(["State", "Job Count"])
-for n in names:
-    atts = {'CountrySubdivision': n[0], 'NumberOfJobs': 1}
+for name, ab in codes.items():
+    atts = {'CountrySubdivision': name, 'NumberOfJobs': 1}
     resp = requests.get(BASE_USAJOBS_URL, params = atts)
     jobcount = int(resp.json()['TotalJobs'])
-
-    thelist.append(['US-' + n[1], jobcount])
+    print(name)
+    thelist.append(['US-' + ab , jobcount])
 
 chartcode = """<html>
   <head>
@@ -43,6 +42,7 @@ chartcode = """<html>
 """
 
 
-htmlfile = open("1-8.html", "w")
+htmlfile = open("1-9.html", "w")
 htmlfile.write(chartcode % thelist)
 htmlfile.close()
+

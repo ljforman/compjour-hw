@@ -1,17 +1,4 @@
-
-import requests
-BASE_USAJOBS_URL = "https://data.usajobs.gov/api/jobs"
-names = [['California','CA'], ['Florida', 'FL'], ['Maryland', 'MD'] , ['New York', 'NY']]
-thelist = []
-thelist.append(["State", "Job Count"])
-for n in names:
-    atts = {'CountrySubdivision': n[0], 'NumberOfJobs': 1}
-    resp = requests.get(BASE_USAJOBS_URL, params = atts)
-    jobcount = int(resp.json()['TotalJobs'])
-
-    thelist.append(['US-' + n[1], jobcount])
-
-chartcode = """<html>
+<html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -23,7 +10,7 @@ chartcode = """<html>
 
       function drawRegionsMap() {
 
-        var data = %s  
+        var data = [['State', 'Job Count'], ['US-DC', 911], ['US-TN', 197], ['US-ID', 162], ['US-SD', 245], ['US-NE', 169], ['US-AK', 234], ['US-NC', 298], ['US-HI', 181], ['US-IN', 172], ['US-ND', 119], ['US-RI', 41], ['US-UT', 238], ['US-MO', 277], ['US-WA', 410], ['US-IL', 287], ['US-CT', 81], ['US-WY', 154], ['US-MI', 253], ['US-VA', 622], ['US-MN', 193], ['US-IA', 96], ['US-MA', 247], ['US-GA', 410], ['US-AZ', 417], ['US-MT', 187], ['US-NY', 379], ['US-FL', 341], ['US-LA', 235], ['US-SC', 214], ['US-OR', 251], ['US-MD', 395], ['US-AR', 166], ['US-OK', 355], ['US-CA', 707], ['US-KY', 185], ['US-VT', 31], ['US-WI', 158], ['US-NJ', 138], ['US-DE', 53], ['US-MS', 179], ['US-AL', 246], ['US-CO', 388], ['US-NV', 173], ['US-OH', 282], ['US-ME', 52], ['US-PA', 238], ['US-TX', 630], ['US-KS', 165], ['US-NH', 66], ['US-NM', 362], ['US-WV', 147]]  
         var datatable = google.visualization.arrayToDataTable(data);
         var options = {'region': 'US', 'width': 600, 'height': 400, 'resolution': 'provinces'};
 
@@ -40,9 +27,3 @@ chartcode = """<html>
       </div>
   </body>
 </html>
-"""
-
-
-htmlfile = open("1-8.html", "w")
-htmlfile.write(chartcode % thelist)
-htmlfile.close()
